@@ -1,0 +1,30 @@
+{
+     "button":[
+        {	
+          "type":"view",
+          "name":"产品浏览",
+           "url":"http://faruxue1688.com/user"
+        },
+        {	
+          "type":"click",
+          "name":"关于我们",
+          "key":""
+        },
+        {	
+          "name":"我的",
+          "sub_button":[{
+               "type": "view", 
+               "name": "用户1",
+               "url":"http://faruxue1688.com/register?userid=1"
+          },{
+               "type": "view", 
+               "name": "用户2",
+                "key": "http://faruxue1688.com/register?userid=2"
+          },{
+            "type": "view", 
+            "name": "销售1",
+            "key": "http://faruxue1688.com/register?userid=3"
+        }]
+        }
+     ]
+}
