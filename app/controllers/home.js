@@ -30,9 +30,6 @@ exports.getdata = function (req, res) {
 };
 
 exports.getuser = function (req, res) {
-  // res.render('home/main', {
-  // title: 'Node Express Mongoose Boilerplate'
-  //   });
   var elasticsearch = require('elasticsearch');
   var client = new elasticsearch.Client({
     host: 'localhost:9200',
@@ -43,15 +40,23 @@ exports.getuser = function (req, res) {
     index: 'index',
     type: 'type',
     body: {
-      query: {
-        match: {
-          name: 'zj'
+      // query: {
+      //   match: {
+      //     name: 'zj'
+      //   }
+      // },
+      aggs: {
+        "group": {
+          terms: {
+            field: "name"
+          }
         }
       }
     }
   }).then(function (resp) {
       var hits = resp.hits.hits;
-      var string = JSON.stringify(hits[0])
+      var vgg=resp.aggregations.group.buckets;
+      var string = JSON.stringify(vgg)
       res.write(string);
       res.end();
   }, function (err) {
