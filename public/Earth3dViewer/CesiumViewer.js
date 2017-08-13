@@ -30,7 +30,7 @@ define([
         viewerCesiumInspectorMixin,
         viewerDragDropMixin) {
     'use strict';
-
+    alert("1");
     /*
      * 'debug'  : true/false,   // Full WebGL error reporting at substantial performance cost.
      * 'lookAt' : CZML id,      // The CZML ID of the object to track at startup.
@@ -201,7 +201,8 @@ define([
             saveCamera();
         });
     }
-
+    alert("2");
     loadingIndicator.style.display = 'none';
-    AddModel(viewer);
+    // AddModel(viewer);
+    alert("3");
 });

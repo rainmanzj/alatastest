@@ -1,5 +1,5 @@
-@import url(http://www.faruxue1688.com/test/earth3d/Source/Widgets/widgets.css);
-@import url(http://www.faruxue1688.com/test/earth3d/Source/Widgets/lighter.css);
+@import url(127.0.0.1:3000/Cesium/Source/Widgets/widgets.css);
+@import url(127.0.0.1:3000/Cesium/earth3d/Source/Widgets/lighter.css);
 
 html {
     height: 100%;
