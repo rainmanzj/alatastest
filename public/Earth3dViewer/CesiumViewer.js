@@ -28,7 +28,9 @@ define([
         createTileMapServiceImageryProvider,
         Viewer,
         viewerCesiumInspectorMixin,
-        viewerDragDropMixin) {
+        viewerDragDropMixin,
+        init
+    ) {
     'use strict';
     alert("1");
     /*
@@ -203,6 +205,5 @@ define([
     }
     alert("2");
     loadingIndicator.style.display = 'none';
-    // AddModel(viewer);
-    alert("3");
+    init.test(viewer);
 });
