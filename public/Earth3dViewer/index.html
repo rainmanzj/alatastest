@@ -11,11 +11,53 @@
     <link rel="shortcut icon" href="favicon1.ico" type="image/x-icon" />
     <link rel="stylesheet" href="CesiumViewer.css" media="screen">
     <script data-main="CesiumViewerStartup" src="../Cesium/ThirdParty/requirejs-2.1.20/require.js"></script>
-    <!-- <script src="../lib/vue/vue.js"></script>
-    <script src="../lib/vue/vue-resource.js"></script> -->
+    <script src="lib/vue/vue.js"></script>
+    <script src="lib/vue/vue-resource.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.js"></script>
+    
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: '我是一个绑定的默认值!'
+            }
+            });
+
+            
+            function loadsearch()
+            {
+                // alert("test");
+                // this.$http.get('http://127.0.0.1:3000/getuser')
+                // .then((response) => {
+                //     alert("11");
+                       
+                //     });
+                var resource = "http://127.0.0.1:3000/getuser";
+                $.ajax({
+                    url: resource,
+                    type: "get",
+					scrossDomain: true,
+                    success: function(msg) {
+                        alert(msg);
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        alert(XMLHttpRequest.status);
+                        alert(XMLHttpRequest.readyState);
+                        alert("111"+textStatus);
+                    },
+                    complete: function(XMLHttpRequest, textStatus) {
+                        this; // 调用本次AJAX请求时传递的options参数
+                    }
+                });
+            }
+        </script> 
 </head>
 <body style="background: #000;">
-    <div id="cesiumContainer" class="fullWindow"></div>
+    <div style="z-index:999">
+        <input type="button" onclick="loadsearch()" value="招聘">
+    </div>
+    <div style="z-index:1" id="cesiumContainer" class="fullWindow"></div>
     <div id="loadingIndicator" class="loadingIndicator"></div>
+    
 </body>
 </html>

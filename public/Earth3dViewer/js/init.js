@@ -34,7 +34,6 @@ define([
 
 var test=function(viewer)
 {
-    alert("1");
     createModel(viewer,'http://www.faruxue1688.com/test/earth3d/Apps/earth3dviewer/model/house/house.gltf', 0.0);
  
 };
