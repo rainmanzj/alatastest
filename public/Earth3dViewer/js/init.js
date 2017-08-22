@@ -32,14 +32,25 @@ define([
     viewerDragDropMixin) {
 'use strict';
 
-var test=function(viewer)
+var test=function()
 {
-    createModel(viewer,'http://www.faruxue1688.com/test/earth3d/Apps/earth3dviewer/model/house/house.gltf', 0.0);
+    createModel('http://www.faruxue1688.com/test/earth3d/Apps/earth3dviewer/model/house/house.gltf', 0.0);
  
 };
+var test2=function()
+{
+    if(Viewer!=null)
+    {
+        alert("1");
+    } 
+    else
+    {
+        alert("12");
+    }
+};
 
-function createModel(viewer, url, height) {
-    viewer.entities.removeAll();
+function createModel( url, height) {
+    Viewer.entities.removeAll();
 
     var position = Cesium.Cartesian3.fromDegrees(114.10,30.10, height);
     var heading = Cesium.Math.toRadians(135);
@@ -48,7 +59,7 @@ function createModel(viewer, url, height) {
     var hpr = new Cesium.HeadingPitchRoll(heading, pitch, roll);
     var orientation = Cesium.Transforms.headingPitchRollQuaternion(position, hpr);
 
-    var wyoming = viewer.entities.add({  //添加一个实体，仅需要传递一个简单JSON对象，返回值是一个Entity对象  
+    var wyoming = Viewer.entities.add({  //添加一个实体，仅需要传递一个简单JSON对象，返回值是一个Entity对象  
       name : 'Wyoming',  
       polygon : {  
         hierarchy : Cesium.Cartesian3.fromDegreesArray([//一组地理坐标  
@@ -70,7 +81,7 @@ function createModel(viewer, url, height) {
       }  
     });  
 
-    var blueBox = viewer.entities.add({//蓝色盒子
+    var blueBox = Viewer.entities.add({//蓝色盒子
     name : 'Blue box',
     position: Cesium.Cartesian3.fromDegrees(114.0, 30.0, 0.0),//三维笛卡尔点（x，y，z）
     box : {
@@ -80,7 +91,7 @@ function createModel(viewer, url, height) {
     });
 
 
-    var entity = viewer.entities.add({
+    var entity = Viewer.entities.add({
         name : url,
         position : position,
         orientation : orientation,
@@ -90,10 +101,10 @@ function createModel(viewer, url, height) {
             maximumScale : 20000
         }
     });
-    viewer.trackedEntity = entity;
-    viewer.zoomTo(entity);
+    Viewer.trackedEntity = entity;
+    Viewer.zoomTo(entity);
 
-    var canvas = viewer.canvas;
+    var canvas = Viewer.canvas;
     var pick= new Cesium.Cartesian2(window.innerWidth,window.innerHeight);
 
     var handler = new Cesium.ScreenSpaceEventHandler(canvas);
@@ -101,8 +112,8 @@ function createModel(viewer, url, height) {
         var pnt=click.position;
         var clickX=click.position.x;
         var clickY=click.position.y;
-        var pick1= viewer.scene.globe.pick(viewer.camera.getPickRay(pnt), viewer.scene);
-        var geoPt1= viewer.scene.globe.ellipsoid.cartesianToCartographic(pick1);
+        var pick1= Viewer.scene.globe.pick(Viewer.camera.getPickRay(pnt), Viewer.scene);
+        var geoPt1= Viewer.scene.globe.ellipsoid.cartesianToCartographic(pick1);
         var lon=geoPt1.longitude / Math.PI * 180;
         var lat=geoPt1.latitude / Math.PI * 180;
         alert("平面坐标 x:"+pick1.x+"y:"+pick1.y+"\n地理坐标 lon:"+lon+"lat:"+lat);
@@ -115,5 +126,8 @@ viewer.camera.flyTo({
 
 };
 
-return{test:test} ;
+return{
+    test:test,
+    test2:test2
+};
 });

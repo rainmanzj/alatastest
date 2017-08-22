@@ -22,7 +22,7 @@
                 message: '我是一个绑定的默认值!'
             }
             });
-            
+            var a=11;
             function findgeo(name)
             {
                 var geodata=[
@@ -51,27 +51,23 @@
             }
             function loadsearch()
             {
-                // alert("test");
-                // this.$http.get('http://127.0.0.1:3000/getuser')
-                // .then((response) => {
-                //     alert("11");
-                       
-                //     });
                 var resource = "http://127.0.0.1:3000/getuser";
                 $.ajax({
                     url: resource,
                     type: "get",
+                    cache: false,
+                    async: false,
 					scrossDomain: true,
                     success: function(msg) {
                         data=JSON.parse(msg);
-     
                         for(i=0;i<data.length;i++)
                         {
                             //alert(data[i].key);
                             geodata=findgeo(data[i].key);
                             if(geodata!=null)
-                                alert(data[i].key+geodata.lon);   
+                                alert(geodata.chname+geodata.lon+","+geodata.lat);   
                         }
+                        a=msg;
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert(XMLHttpRequest.status);
@@ -80,6 +76,14 @@
                     },
                     complete: function(XMLHttpRequest, textStatus) {
                         this; // 调用本次AJAX请求时传递的options参数
+                        alert("2");
+                        require(["js/init"],function (js4) {
+                                if(js4!=null)
+                                {
+                                    alert("导出的是：")
+                                    js4.test2();
+                                }
+                            });
                     }
                 });
             }
