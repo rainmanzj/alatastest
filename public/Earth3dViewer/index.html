@@ -22,8 +22,33 @@
                 message: '我是一个绑定的默认值!'
             }
             });
-
             
+            function findgeo(name)
+            {
+                var geodata=[
+                    {"name":"neimenggu" ,
+                    "chname": "内蒙古自治区",
+                    "lon":118.87,
+                    "lat":42.28
+                    },
+                    {"name":"hunan",
+                    "chname":"湖南省",
+                    "lon":113,
+                    "lat":28.21
+                    },
+                    {"name":"wh",
+                     "chname": "湖北省",
+                        "lon": 114.31,
+                        "lat":30.52
+                    }
+                ];
+                for(var i=0;i<geodata.length;i++)
+                {
+                    if(geodata[i].name==name)
+                        return geodata[i];
+                }
+                return null;
+            }
             function loadsearch()
             {
                 // alert("test");
@@ -38,7 +63,15 @@
                     type: "get",
 					scrossDomain: true,
                     success: function(msg) {
-                        alert(msg);
+                        data=JSON.parse(msg);
+     
+                        for(i=0;i<data.length;i++)
+                        {
+                            //alert(data[i].key);
+                            geodata=findgeo(data[i].key);
+                            if(geodata!=null)
+                                alert(data[i].key+geodata.lon);   
+                        }
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert(XMLHttpRequest.status);
