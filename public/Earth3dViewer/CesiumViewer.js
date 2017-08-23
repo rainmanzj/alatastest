@@ -53,7 +53,7 @@ define([
     }
 
     var loadingIndicator = document.getElementById('loadingIndicator');
-    var viewer;
+    
     try {
         viewer = new Viewer('cesiumContainer',  {
         animation : false,//是否创建动画小器件，左下角仪表

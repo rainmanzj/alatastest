@@ -11,41 +11,54 @@
     <link rel="shortcut icon" href="favicon1.ico" type="image/x-icon" />
     <link rel="stylesheet" href="CesiumViewer.css" media="screen">
     <script data-main="CesiumViewerStartup" src="../Cesium/ThirdParty/requirejs-2.1.20/require.js"></script>
-    <script src="lib/vue/vue.js"></script>
-    <script src="lib/vue/vue-resource.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.js"></script>
+    <!-- <script src="lib/vue/vue.js"></script>
+    <script src="lib/vue/vue-resource.js"></script>-->
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.js"></script> 
     
     <script>
-        var app = new Vue({
-            el: '#app',
-            data: {
-                message: '我是一个绑定的默认值!'
-            }
-            });
-            var a=11;
-            function findgeo(name)
+            var viewer;
+            var aggdata=[];
+            function findgeo(name,content)
             {
                 var geodata=[
+                    {"name":"bj" ,
+                    "chname": "北京",
+                    "lon":116.46,
+                    "lat":39.92,
+                    "content":""
+                    },
+                    {"name":"sz" ,
+                    "chname": "深圳",
+                    "lon":114.186124,
+                    "lat":22.293586,
+                    "content":""
+                    },
                     {"name":"neimenggu" ,
                     "chname": "内蒙古自治区",
                     "lon":118.87,
-                    "lat":42.28
+                    "lat":42.28,
+                    "content":""
                     },
                     {"name":"hunan",
                     "chname":"湖南省",
                     "lon":113,
-                    "lat":28.21
+                    "lat":28.21,
+                    "content":""
                     },
                     {"name":"wh",
                      "chname": "湖北省",
-                        "lon": 114.31,
-                        "lat":30.52
+                     "lon": 114.31,
+                     "lat":30.52,
+                     "content":""
                     }
                 ];
                 for(var i=0;i<geodata.length;i++)
                 {
                     if(geodata[i].name==name)
+                    {
+                        geodata[i].content=content;
                         return geodata[i];
+                    }
                 }
                 return null;
             }
@@ -62,12 +75,12 @@
                         data=JSON.parse(msg);
                         for(i=0;i<data.length;i++)
                         {
-                            //alert(data[i].key);
-                            geodata=findgeo(data[i].key);
+                            geodata=findgeo(data[i].key,data[i].doc_count);
                             if(geodata!=null)
-                                alert(geodata.chname+geodata.lon+","+geodata.lat);   
+                            {
+                                aggdata.push(geodata);
+                            }
                         }
-                        a=msg;
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert(XMLHttpRequest.status);
@@ -75,15 +88,13 @@
                         alert("111"+textStatus);
                     },
                     complete: function(XMLHttpRequest, textStatus) {
-                        this; // 调用本次AJAX请求时传递的options参数
-                        alert("2");
-                        require(["js/init"],function (js4) {
-                                if(js4!=null)
-                                {
-                                    alert("导出的是：")
-                                    js4.test2();
-                                }
-                            });
+                        require(['js/init'], function(js) {
+                            if(js!=null)
+                            {
+                                for(var i=0;i<aggdata.length;i++)
+                                    js.test2(viewer,aggdata[i].chname+":"+aggdata[i].content+"条招聘信息",aggdata[i].lon,aggdata[i].lat);
+                            }
+                        });
                     }
                 });
             }
