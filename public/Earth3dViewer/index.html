@@ -91,6 +91,12 @@
                         require(['js/init'], function(js) {
                             if(js!=null)
                             {
+                                var myDate = new Date();
+                                var hours=myDate.getHours();
+                                var minutes=myDate.getMinutes();
+                                var seconds=myDate.getSeconds();
+                                alert("大数据更新于"+hours+"时"+minutes+"分"+seconds+"秒");
+                                viewer.entities.removeAll();
                                 for(var i=0;i<aggdata.length;i++)
                                     js.test2(viewer,aggdata[i].chname+":"+aggdata[i].content+"条招聘信息",aggdata[i].lon,aggdata[i].lat);
                             }
@@ -102,7 +108,7 @@
 </head>
 <body style="background: #000;">
     <div style="z-index:999">
-        <input type="button" onclick="loadsearch()" value="招聘">
+        <input type="button" onclick="loadsearch()" value="招聘大数据">
     </div>
     <div style="z-index:1" id="cesiumContainer" class="fullWindow"></div>
     <div id="loadingIndicator" class="loadingIndicator"></div>
