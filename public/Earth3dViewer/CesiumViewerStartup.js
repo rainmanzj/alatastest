@@ -2,8 +2,8 @@
 require({
     baseUrl : '.',
     paths : {
-        domReady : '../Cesium/ThirdParty/requirejs-2.1.20/domReady',
-        Cesium : '../Cesium/Source'
+        domReady : '../lib/Cesium/ThirdParty/requirejs-2.1.20/domReady',
+        Cesium : '../lib/Cesium/Source'
     }
 }, [
         'CesiumViewer'

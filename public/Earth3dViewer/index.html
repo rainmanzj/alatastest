@@ -10,7 +10,7 @@
     <title>Viewer</title>
     <link rel="shortcut icon" href="favicon1.ico" type="image/x-icon" />
     <link rel="stylesheet" href="CesiumViewer.css" media="screen">
-    <script data-main="CesiumViewerStartup" src="../Cesium/ThirdParty/requirejs-2.1.20/require.js"></script>
+    <script data-main="CesiumViewerStartup" src="../lib/Cesium/ThirdParty/requirejs-2.1.20/require.js"></script>
     <!-- <script src="lib/vue/vue.js"></script>
     <script src="lib/vue/vue-resource.js"></script>-->
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.js"></script> 
@@ -21,13 +21,13 @@
             function findgeo(name,content)
             {
                 var geodata=[
-                    {"name":"bj" ,
+                    {"name":"beijing" ,
                     "chname": "北京",
                     "lon":116.46,
                     "lat":39.92,
                     "content":""
                     },
-                    {"name":"sz" ,
+                    {"name":"shenzhen" ,
                     "chname": "深圳",
                     "lon":114.186124,
                     "lat":22.293586,
@@ -39,14 +39,14 @@
                     "lat":42.28,
                     "content":""
                     },
-                    {"name":"hunan",
-                    "chname":"湖南省",
+                    {"name":"changsha",
+                    "chname":"长沙",
                     "lon":113,
                     "lat":28.21,
                     "content":""
                     },
-                    {"name":"wh",
-                     "chname": "湖北省",
+                    {"name":"wuhan",
+                     "chname": "武汉",
                      "lon": 114.31,
                      "lat":30.52,
                      "content":""
@@ -84,8 +84,6 @@
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         alert(XMLHttpRequest.status);
-                        alert(XMLHttpRequest.readyState);
-                        alert("111"+textStatus);
                     },
                     complete: function(XMLHttpRequest, textStatus) {
                         require(['js/init'], function(js) {

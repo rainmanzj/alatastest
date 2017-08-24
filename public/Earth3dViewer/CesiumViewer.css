@@ -1,5 +1,5 @@
-@import url(../Cesium/Source/Widgets/widgets.css);
-@import url(../Cesium/earth3d/Source/Widgets/lighter.css);
+@import url(../lib/Cesium/Source/Widgets/widgets.css);
+@import url(../lib/Cesium/earth3d/Source/Widgets/lighter.css);
 
 html {
     height: 100%;
