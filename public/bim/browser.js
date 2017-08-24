@@ -131,8 +131,8 @@
             keepTarget = true;
         });
 
-        viewer.load( "tests/data/琵琶行彭.wexbim");
-        browser.load("tests/data/琵琶行彭.json");
+        viewer.load("tests/data/琵琶行彭.wexbim");
+        //browser.load("tests/data/LakesideRestaurant.json");
 
         //var cube = new xNavigationCube();
         //viewer.addPlugin(cube);
