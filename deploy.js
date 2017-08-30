@@ -12,12 +12,11 @@ function run_cmd(cmd, args, callback) {
   // child.stdout.on('data', function(buffer) { resp += buffer.toString(); });
 	  // child.stdout.on('end', function() { callback (resp) });
 	var exec = require('child_process').exec;  
-	exec('D:\\04dev\\watermelon\\watermelon0810\\watermelon\\deploy.bat', function(error, stdout, stderr){ 
+	exec('deploy.bat', function(error, stdout, stderr){ 
 	  if ( !error ) {
-		console.log("bat is ok");
-		callback(stdout);
+		  callback(stdout);
 	  } else {
-		console.log(error);
+		  console.log(error);
 	  }
 	});
 }
@@ -39,7 +38,7 @@ handler.on('push', function (event) {
   // console.log('Received a push event for %s to %s',
     // event.payload.repository.name,
     // event.payload.ref);
-  run_cmd('cmd ', 'D:\04dev\watermelon\watermelon0810\watermelon\deploy.bat', function(text){ console.log(text) });
+  run_cmd('cmd ', 'deploy.bat', function(text){ console.log(text) });
 })
  
 /*

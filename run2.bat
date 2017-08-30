@@ -1,0 +1,3 @@
+
+node deploy.js
+pause

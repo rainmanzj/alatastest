@@ -13,6 +13,8 @@ define([
         'Cesium/Widgets/Viewer/Viewer',
         'Cesium/Widgets/Viewer/viewerCesiumInspectorMixin',
         'Cesium/Widgets/Viewer/viewerDragDropMixin',
+        'Cesium/Scene/ArcGisMapServerImageryProvider',
+        'Cesium/Core/VRTheWorldTerrainProvider',
         'js/init.js',
         'domReady!'
     ], function(
@@ -29,6 +31,8 @@ define([
         Viewer,
         viewerCesiumInspectorMixin,
         viewerDragDropMixin,
+        ArcGisMapServerImageryProvider,
+        VRTheWorldTerrainProvider,
         init
     ) {
     'use strict';
@@ -66,7 +70,11 @@ define([
         selectionIndicator : true,//是否显示选取指示器组件
         timeline : false,//是否显示时间轴
         navigationHelpButton : false,//是否显示右上角的帮助按钮
-        scene3DOnly : true//如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+        scene3DOnly : true,//如果设置为true，则所有几何图形以3D模式绘制以节约GPU资源
+        imageryProvider : new ArcGisMapServerImageryProvider({
+            url : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer'
+        }),
+        baseLayerPicker : false
     });
     } catch (exception) {
         loadingIndicator.style.display = 'none';
@@ -77,7 +85,13 @@ define([
         }
         return;
     }
-
+    
+    var vrTheWorldProvider = new Cesium.VRTheWorldTerrainProvider({
+        url : 'http://www.vr-theworld.com/vr-theworld/tiles1.0.0/73/',
+        credit : 'Terrain data courtesy VT MÄK'
+    });
+    viewer.terrainProvider = vrTheWorldProvider;
+    viewer.scene.globe.enableLighting = true;
     viewer.extend(viewerDragDropMixin);
     if (endUserOptions.inspector) {
         viewer.extend(viewerCesiumInspectorMixin);
