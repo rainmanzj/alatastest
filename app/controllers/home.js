@@ -38,15 +38,18 @@ exports.getuser = function (req, res) {
 };
 
 exports.testgetserver = function (req, res) {
-  return new Promise((resolve, reject) => {
-    seneca()
-    .client({port: 8270,type: 'tcp', pin: 'cmd:run'})
-    .act('cmd:run', function handler (err, reply) {
-          res.write(JSON.stringify(reply));
-          res.end();
-      }
-    );
-  })
+  res.write("11");
+  res.end();
+
+  // return new Promise((resolve, reject) => {
+  //   seneca()
+  //   .client({port: 8270,type: 'tcp', pin: 'cmd:run'})
+  //   .act('cmd:run', function handler (err, reply) {
+  //         res.write(JSON.stringify(reply));
+  //         res.end();
+  //     }
+  //   );
+  // })
 };
 
 
