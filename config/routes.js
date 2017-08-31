@@ -30,6 +30,7 @@ function getopenid(req, res, next) {
 module.exports = function (app) {
     //db.init();
     app.get('/td/test',home.testgetserver);
+    app.get('/td/loadagg',home.loadagg);
     console.log("route");
     // app.get('/testgetserver', function (req, res) {
     //     home.testgetserver(req, res);

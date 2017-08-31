@@ -29,11 +29,39 @@ exports.getdata = function (req, res) {
     // .act('cmd:run', handler);
 };
 
-exports.getuser = function (req, res) {
-  res.render('home/user', {
-    userinfo: 'Node Express Mongoose Boilerplate'
-    });
+exports.loadagg = function (req, res) {
+  var elasticsearch = require('elasticsearch');
+  var client = new elasticsearch.Client({
+    host: 'localhost:9200',
+    log: 'trace'
+  });
 
+  client.search({
+    index: 'index',
+    type: 'type',
+    body: {
+      // query: {
+      //   match: {
+      //     name: 'zj'
+      //   }
+      // },
+      aggs: {
+        "group": {
+          terms: {
+            field: "name"
+          }
+        }
+      }
+    }
+  }).then(function (resp) {
+      var hits = resp.hits.hits;
+      var vgg=resp.aggregations.group.buckets;
+      var string = JSON.stringify(vgg)
+      res.write(string);
+      res.end();
+  }, function (err) {
+      console.trace(err.message);
+  });
   
 };
 
