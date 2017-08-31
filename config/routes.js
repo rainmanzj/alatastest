@@ -29,291 +29,288 @@ function getopenid(req, res, next) {
 
 module.exports = function (app) {
     db.init();
-    app.get('/testgetserver', function (req, res) {
-        home.testgetserver(req, res);
-    });
-    //
-    app.get('/wx', function (req, res) {
-        wechatApp.auth(req, res);
-    });
+    app.get('/3d/testgetserver',home.testgetserver);
+    // app.get('/testgetserver', function (req, res) {
+    //     home.testgetserver(req, res);
+    // });
+    // //
+    // app.get('/wx', function (req, res) {
+    //     wechatApp.auth(req, res);
+    // });
 
-    //
-    app.post('/wx', function (req, res) {
-        wechatApp.handleMsg(req, res);
-    });
+    // //
+    // app.post('/wx', function (req, res) {
+    //     wechatApp.handleMsg(req, res);
+    // });
 
-    //
-    app.get('/getAccessToken', function (req, res) {
-        wechatApp.getAccessToken().then(function (data) {
-            res.send(data);
-        });
-    });
+    // //
+    // app.get('/getAccessToken', function (req, res) {
+    //     wechatApp.getAccessToken().then(function (data) {
+    //         res.send(data);
+    //     });
+    // });
 
-    //
-    app.get("/admin/show", function (req, res, next) {
-        //
-        db.User.findAll().then(function (users) {
-            res.render('manager/userlist.ejs', { users: users });
-        });
-    });
-    app.get("/admin/edit", function (req, res, next) {
-        //
-        db.User.findAll().success(function (users) {
-            res.render('home/userlist.ejs', { users: users });
+    // //
+    // app.get("/admin/show", function (req, res, next) {
+    //     //
+    //     db.User.findAll().then(function (users) {
+    //         res.render('manager/userlist.ejs', { users: users });
+    //     });
+    // });
+    // app.get("/admin/edit", function (req, res, next) {
+    //     //
+    //     db.User.findAll().success(function (users) {
+    //         res.render('home/userlist.ejs', { users: users });
 
-        });
-    });
-    app.get("/admin/delete", function (req, res, next) {
-        //
-        var userid = req.query.userid;
+    //     });
+    // });
+    // app.get("/admin/delete", function (req, res, next) {
+    //     //
+    //     var userid = req.query.userid;
 
-        //
-        db.User.destroy({ where: { userid: userid } }).then(function (rowDeleted) {
-            if (rowDeleted === 0) {
-                res.redirect("/admin/show");
-            } else {
-                res.write("111");
-                res.end();
-            }
+    //     //
+    //     db.User.destroy({ where: { userid: userid } }).then(function (rowDeleted) {
+    //         if (rowDeleted === 0) {
+    //             res.redirect("/admin/show");
+    //         } else {
+    //             res.write("111");
+    //             res.end();
+    //         }
 
-        })
+    //     })
 
-    });
+    // });
 
-    app.get('/wx/test', getopenid, function (req, res, next) {
+    // app.get('/wx/test', getopenid, function (req, res, next) {
 
 
-        webchatTest.add(req.session.openid);
-    });
+    //     webchatTest.add(req.session.openid);
+    // });
 
-    app.get('/wx/marketingregister', weixinserver.userinfo, function (req, res, next) {
+    // app.get('/wx/marketingregister', weixinserver.userinfo, function (req, res, next) {
         
-                var weixin = req.session.weixin;
+    //             var weixin = req.session.weixin;
         
-                console.log("get1", weixin);
+    //             console.log("get1", weixin);
         
-                db.User.findOne({
-                    where: {
-                        openid: weixin.openid
-                    }
-                }).then(function (result) {
-                    if (result) {
-                        req.session.user = result;
-                    } 
-                    res.redirect("/index.html");
-                });
+    //             db.User.findOne({
+    //                 where: {
+    //                     openid: weixin.openid
+    //                 }
+    //             }).then(function (result) {
+    //                 if (result) {
+    //                     req.session.user = result;
+    //                 } 
+    //                 res.redirect("/index.html");
+    //             });
         
-            });
+    //         });
 
 
-    app.get('/wx/userinfo', weixinserver.userinfo, function (req, res, next) {
+    // app.get('/wx/userinfo', weixinserver.userinfo, function (req, res, next) {
 
-        var weixin = req.session.weixin;
+    //     var weixin = req.session.weixin;
 
-        console.log("get1", weixin);
+    //     console.log("get1", weixin);
 
-        db.User.findOne({
-            where: {
-                openid: weixin.openid
-            }
-        }).then(function (result) {
-            if (result) {
-                //
-                req.session.user = result;
+    //     db.User.findOne({
+    //         where: {
+    //             openid: weixin.openid
+    //         }
+    //     }).then(function (result) {
+    //         if (result) {
+    //             //
+    //             req.session.user = result;
 
-                if (result.mobile) {
-                    res.redirect('/user');
-                } else {
-                    console.log("find a person bu no register");
-                    if (result.roleid == 0) {
-                        res.redirect("/register.html");
-                    } else {
-                        res.redirect("/SaleRegister.html");
-                    }
+    //             if (result.mobile) {
+    //                 res.redirect('/user');
+    //             } else {
+    //                 console.log("find a person bu no register");
+    //                 if (result.roleid == 0) {
+    //                     res.redirect("/register.html");
+    //                 } else {
+    //                     res.redirect("/SaleRegister.html");
+    //                 }
              
-                }
+    //             }
           
-            } else {
-                console.log("find no person");
-                res.redirect("/register.html");
-            }
-        });
+    //         } else {
+    //             console.log("find no person");
+    //             res.redirect("/register.html");
+    //         }
+    //     });
 
-    });
-    //
-    app.get('/user', function (req, res, next) {
-        var user = req.session.user;
+    // });
+    // //
+    // app.get('/user', function (req, res, next) {
+    //     var user = req.session.user;
   
-        if (user != null) {
-            db.User.findOne({
-                where: {
-                    openid: user.openid
-                }
-            }).then(function (result) {
-                if (result.roleid == 0) {
-                    res.redirect("/registerEnd.html");
-                } else {
-                    res.render('home/salesperson.ejs', { user: result });
-                }
-            });
-        } else {
-            res.redirect("/register.html");
-        }
-    });
+    //     if (user != null) {
+    //         db.User.findOne({
+    //             where: {
+    //                 openid: user.openid
+    //             }
+    //         }).then(function (result) {
+    //             if (result.roleid == 0) {
+    //                 res.redirect("/registerEnd.html");
+    //             } else {
+    //                 res.render('home/salesperson.ejs', { user: result });
+    //             }
+    //         });
+    //     } else {
+    //         res.redirect("/register.html");
+    //     }
+    // });
 
-    //
-    app.get('/user/my', function (req, res, next) {
-        var user = req.session.user;
+    // //
+    // app.get('/user/my', function (req, res, next) {
+    //     var user = req.session.user;
 
-        if (user != undefined) {
+    //     if (user != undefined) {
 
-            db.Sequelize.query("select * from user as u1  join userinfo as u2 on u1.userid=u2.user_userid where userid=" + user.userid).then(function (fuser) {
+    //         db.Sequelize.query("select * from user as u1  join userinfo as u2 on u1.userid=u2.user_userid where userid=" + user.userid).then(function (fuser) {
 
-                var userf = fuser[0][0];
+    //             var userf = fuser[0][0];
 
-                db.Sequelize.query("select * from user as u1  join userinfo as u2 on u1.userid = u2.user_userid where u1.sponsor="+user.userid).then(function (sponsors) {
+    //             db.Sequelize.query("select * from user as u1  join userinfo as u2 on u1.userid = u2.user_userid where u1.sponsor="+user.userid).then(function (sponsors) {
 
-                    res.render('home/user.ejs', { user: userf, sponsors: sponsors[0]});
+    //                 res.render('home/user.ejs', { user: userf, sponsors: sponsors[0]});
 
-                });
+    //             });
 
 
-            });
+    //         });
        
        
-        } else {
+    //     } else {
 
-          res.redirect("/register.html");
-        }
+    //       res.redirect("/register.html");
+    //     }
 
-    });
-    //
-    app.get('/user/orcode', function (req, res, next) {
+    // });
+    // //
+    // app.get('/user/orcode', function (req, res, next) {
 
-        var user = req.session.user;
+    //     var user = req.session.user;
         
-        if (user != undefined) {
-            console.log("jj:"+user.userid);
-            http.get('http://www.faruxue1688.com/wx/qrcode?scenid=' + user.userid, function (result) {
-                console.log("imgreq:"+'http://www.faruxue1688.com/wx/qrcode?scenid=' + user.userid);
-                var html = '';
-                result.on('data', function (data) {
-                    console.log("imgurl:"+data);
-                    html += data;
+    //     if (user != undefined) {
+    //         console.log("jj:"+user.userid);
+    //         http.get('http://www.faruxue1688.com/wx/qrcode?scenid=' + user.userid, function (result) {
+    //             console.log("imgreq:"+'http://www.faruxue1688.com/wx/qrcode?scenid=' + user.userid);
+    //             var html = '';
+    //             result.on('data', function (data) {
+    //                 console.log("imgurl:"+data);
+    //                 html += data;
                     
-                    res.render('home/orcode.ejs', { res: html });
-                });
-                result.on('end', function (html) {
-                    console.info("creare or code");
-                });
-            });
-        } else {
-            http.get('http://www.faruxue1688.com/wx/qrcode?scenid=11', function (result) {
+    //                 res.render('home/orcode.ejs', { res: html });
+    //             });
+    //             result.on('end', function (html) {
+    //                 console.info("creare or code");
+    //             });
+    //         });
+    //     } else {
+    //         http.get('http://www.faruxue1688.com/wx/qrcode?scenid=11', function (result) {
 
-                var html = '';
-                result.on('data', function (data) {
-                    html += data;
+    //             var html = '';
+    //             result.on('data', function (data) {
+    //                 html += data;
 
-                    res.render('home/orcode.ejs', { res: html });
-                });
-                result.on('end', function (html) {
-                    console.info("creare or code");
-                });
+    //                 res.render('home/orcode.ejs', { res: html });
+    //             });
+    //             result.on('end', function (html) {
+    //                 console.info("creare or code");
+    //             });
    
-            });
-        }
-    });
+    //         });
+    //     }
+    // });
 
-    app.get('/wx/qrcode', weixinserver.qrcode);
+    // app.get('/wx/qrcode', weixinserver.qrcode);
 
-    app.post('/login', function (req, res, next) {
+    // app.post('/login', function (req, res, next) {
 
-        next();
-    });
+    //     next();
+    // });
 
-    app.post('/register', function (req, res, next) {
-        var username = req.body.username;
-        var address = req.body.address;
-        var mobile = req.body.mobile;
-        var code = req.body.code;
-        var weixin = req.session.weixin;
-        var user = null;
-        var userinfo = null;
+    // app.post('/register', function (req, res, next) {
+    //     var username = req.body.username;
+    //     var address = req.body.address;
+    //     var mobile = req.body.mobile;
+    //     var code = req.body.code;
+    //     var weixin = req.session.weixin;
+    //     var user = null;
+    //     var userinfo = null;
        
-        if (weixin) {
+    //     if (weixin) {
 
     
-            user = {
-                mobile: mobile,
-                openid: weixin.openid,
-                active: true,
-            };
+    //         user = {
+    //             mobile: mobile,
+    //             openid: weixin.openid,
+    //             active: true,
+    //         };
      
-            db.User.findOne({
-                where: {
-                    openid: weixin.openid
-                }
-            }).then(function (result) {
-                if (result != null) {
+    //         db.User.findOne({
+    //             where: {
+    //                 openid: weixin.openid
+    //             }
+    //         }).then(function (result) {
+    //             if (result != null) {
 
 
-                    if (result.mobile!=null&&result.mobile != "") {
-                        var cuser = result;
-                        req.session.user = cuser;
-                        res.redirect('/user');
-                    } else {
+    //                 if (result.mobile!=null&&result.mobile != "") {
+    //                     var cuser = result;
+    //                     req.session.user = cuser;
+    //                     res.redirect('/user');
+    //                 } else {
 
               
     
-                    userinfo = {
-                        username: username,
-                        address: address,
-                        user_userid: result.userid
-                    };
-                    Promise.all([
-                        db.User.update(user, { where: { openid: weixin.openid} }),
-                        db.UserInfo.create(userinfo)
-                    ]).then(function (udata) {
-                        var user = result;
-                        req.session.user = user;
-                        console.log("create success and go to registerEnd");
-                        res.redirect('/user');
-                        });
+    //                 userinfo = {
+    //                     username: username,
+    //                     address: address,
+    //                     user_userid: result.userid
+    //                 };
+    //                 Promise.all([
+    //                     db.User.update(user, { where: { openid: weixin.openid} }),
+    //                     db.UserInfo.create(userinfo)
+    //                 ]).then(function (udata) {
+    //                     var user = result;
+    //                     req.session.user = user;
+    //                     console.log("create success and go to registerEnd");
+    //                     res.redirect('/user');
+    //                     });
 
-                    }
-                };
-                });
+    //                 }
+    //             };
+    //             });
 
   
-        } else {
-            user = {
-                mobile: mobile,
-                active: true,
-            };
-            userinfo = {
-                username: username,
-                address: address,
-            };
+    //     } else {
+    //         user = {
+    //             mobile: mobile,
+    //             active: true,
+    //         };
+    //         userinfo = {
+    //             username: username,
+    //             address: address,
+    //         };
 
-            Promise.all([
-                db.User.create(user),
-                db.UserInfo.create(userinfo),
-            ]).then(function (result) {
-                var user = result[0];
-                req.session.user = user;
-                console.log("create success and go to registerEnd");
-                res.redirect('/user');
-            }).catch(function (e) {
-                return res.redirect('/register.html');
-                next(e);
-            });
-        }
-
-   
-
-    });
-
-    app.use('/manager',require("../app/controllers/manager"));
+    //         Promise.all([
+    //             db.User.create(user),
+    //             db.UserInfo.create(userinfo),
+    //         ]).then(function (result) {
+    //             var user = result[0];
+    //             req.session.user = user;
+    //             console.log("create success and go to registerEnd");
+    //             res.redirect('/user');
+    //         }).catch(function (e) {
+    //             return res.redirect('/register.html');
+    //             next(e);
+    //         });
+    //     }
+    // });
+    // app.use('/manager',require("../app/controllers/manager"));
 
     app.use(function (err, req, res, next) {
         if (err.message
