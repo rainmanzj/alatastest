@@ -50,7 +50,7 @@ function loadsearch()
 
 function loadagg()
 {
-    var resource = "http://127.0.0.1:3002/td/loadagg";
+    var resource = "http://www.faruxue1688.com/td/loadagg";
     $.ajax({
         url: resource,
         type: "get",
