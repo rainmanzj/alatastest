@@ -1,30 +1,19 @@
-{
+﻿{
      "button":[
         {	
           "type":"view",
           "name":"产品浏览",
-           "url":"http://faruxue1688.com/user"
+           "url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx459b286ba935a855&redirect_uri=http://www.faruxue1688.com/wx/marketingregister&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect"
         },
         {	
           "type":"click",
           "name":"关于我们",
-          "key":""
+          "key":"文章"
         },
         {	
+          "type":"view",
           "name":"我的",
-          "sub_button":[{
-               "type": "view", 
-               "name": "用户1",
-               "url":"http://faruxue1688.com/register?userid=1"
-          },{
-               "type": "view", 
-               "name": "用户2",
-                "key": "http://faruxue1688.com/register?userid=2"
-          },{
-            "type": "view", 
-            "name": "销售1",
-            "key": "http://faruxue1688.com/register?userid=3"
-        }]
+           "url":"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx459b286ba935a855&redirect_uri=http://www.faruxue1688.com/wx/userinfo&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect"
         }
      ]
 }

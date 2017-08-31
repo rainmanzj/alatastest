@@ -1,38 +1,30 @@
-﻿module.exports = function (sequelize, DataTypes) {
-    return sequelize.define('User', {
-        userid: {
+﻿//用于建立管理员的表，管理员通过账号和密码登陆
+
+module.exports = function (sequelize, DataTypes) {
+    return sequelize.define('Manager', {
+        managerid: {
             type: DataTypes.BIGINT(11),
             primaryKey: true,
             unique: true,
             autoIncrement: true,
             allowNull: false,
-            comment: '用户唯一ID'
+            comment: '管理员的id信息'
         },
-        mobile: {
+        username: {
             type: DataTypes.STRING,
             allowNull: true,
-            comment: '用户的手机号'
+            comment: '管理员的登陆名'
         },
-        openid: {
+        password: {
             type: DataTypes.STRING,
-            allowNull: true,
-            comment: '用户的微信id'
-        },
-        sponsor: {
-            type: DataTypes.BIGINT(11),
-            allowNull: true,
-            comment: '当前用户的发起人'
-        },
-        active: {
-            type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: true,
-            comment: '是否正常状态'
+            comment: '管理员的密码'
         },
         roleid: {
             type: DataTypes.BIGINT(11),
             allowNull: true,
-            comment: '当前用户的角色'
+            comment: '管理员的角色'
         },
     },
         {
@@ -40,7 +32,7 @@
             underscored: true,
             paranoid: true,
             freezeTableName: true,
-            tableName: 'user',
+            tableName: 'manager',
             charset: 'utf8',
             collate: 'utf8_general_ci'
         });

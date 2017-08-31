@@ -1,132 +1,80 @@
-
+ï»¿
 /**
- * ¿ò¼ÜÄ£¿é
+ * æ¡†æ¶æ¨¡å—
  */
 
-//expressÄ£¿é
+//expressæ¨¡å—
 var express = require('express');
-//ÉèÖÃsession
+//è®¾ç½®session
 var session = require('express-session');
-//¹¹½¨µ±Ç°µÄÑ¹ËõÄ£¿é
+//åˆ›å»ºè¿æ¥åˆ·æ–°ä¸­é—´ä»¶
+var flash = require('connect-flash');
+//æ„å»ºå½“å‰çš„å‹ç¼©æ¨¡å—
 var compression = require('compression');
-//ÈÕÖ¾ÖĞ¼ä¼ş
+//æ—¥å¿—ä¸­é—´ä»¶
 var morgan = require('morgan');
-//cookieÖĞ¼ä¼ş
+//cookieä¸­é—´ä»¶
 var cookieParser = require('cookie-parser');
-//sessionÖĞ¼ä¼ş
-var cookieSession = require('cookie-session');
-//Êı¾İ×ª»»ÖĞ¼ä¼ş
+//æ•°æ®è½¬æ¢ä¸­é—´ä»¶
 var bodyParser = require('body-parser');
-//·½·¨ÖØĞ´ÖĞ¼ä¼ş
+//æ–¹æ³•é‡å†™ä¸­é—´ä»¶
 var methodOverride = require('method-override');
 
-//¿çÓòÇëÇóÖĞ¼ä¼ş
-var csrf = require('csurf');
-//mongoÁ¬½ÓÖĞ¼ä¼ş
-var mongoStore = require('connect-mongo')(session);
-//Ò»´ÎĞÔÏûÏ¢´æ´¢ÖĞ¼ä¼ş
-var flash = require('connect-flash');
-//ÈÕÖ¾ÖĞ¼ä¼ş
-var winston = require('winston');
-
 var helpers = require('view-helpers');
-//ejsÄ£¿é
+//ejsæ¨¡å—
 var ejs = require('ejs');
-
-var config = require('./');
 
 var pkg = require('../package.json');
 
-var env = process.env.NODE_ENV || 'development';
+/**æ„é€ å‡½æ•°ï¼Œå½“å‰ç¨‹åºçš„è¾“å‡º*/
+module.exports = function (app) {
 
-/**¹¹Ôìº¯Êı£¬µ±Ç°³ÌĞòµÄÊä³ö*/
-module.exports = function (app, passport) {
-
-    // Æô¶¯µ±Ç°³ÌĞòµÄÑ¹Ëõ
+    // å¯åŠ¨å½“å‰ç¨‹åºçš„å‹ç¼©
     app.use(compression({
         threshold: 512
     }));
 
-    // ÉèÖÃµ±Ç°µÄ¾²Ì¬Â·¾¶
-    app.use(express.static(config.root + '/public'));
 
-    // Ê¹ÓÃÈÕÖ¾¿ò¼Ü
-    var log;
-    if (env !== 'development') {
-        log = {
-            stream: {
-                write: function (message, encoding) {
-                    winston.info(message);
-                }
-            }
-        };
-    } else {
-        log = 'dev';
-    }
-
-    // Ìí¼ÓÈÕÖ¾ĞÅÏ¢
-    if (env !== 'test') app.use(morgan(log));
-
-    // ÉèÖÃÊÓÍ¼Ä£°åÒıÇæ
-    app.set('views', config.root + '/app/views');
+    // è®¾ç½®è§†å›¾æ¨¡æ¿å¼•æ“
+    app.set('views', "App/views");
     app.set('view engine', 'ejs');
 
-    // ÉèÖÃµ±Ç°°üÎÄ¼şºÍ»·¾³ĞÅÏ¢
-    app.use(function (req, res, next) {
-        res.locals.pkg = pkg;
-        res.locals.env = env;
-        next();
-    });
 
-    // ½øĞĞUrl×ª»»
+
+
+    // è¿›è¡ŒUrlè½¬æ¢
     app.use(bodyParser.urlencoded({
         extended: true
     }));
-    //½øĞĞJSON×ª»»
+    //è¿›è¡ŒJSONè½¬æ¢
     app.use(bodyParser.json());
 
-    //½øĞĞ·½·¨¸²¸Ç
+    //è¿›è¡Œæ–¹æ³•è¦†ç›–
     app.use(methodOverride(function (req, res) {
         if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-            // Post·½·¨»ñÈ¡
+            // Postæ–¹æ³•è·å–
             var method = req.body._method;
             delete req.body._method;
             return method;
         }
     }));
 
-    //Ó¦ÓÃµ±Ç°µÄcookieÖĞ¼ä¼ş
-    app.use(cookieParser());
-    //ÉèÖÃsession
-    app.use(cookieSession({ secret: 'secret' }));
-    // app.use(session({
-    //   secret: pkg.name,
-    //   proxy: true,
-    //   resave: true,
-    //   saveUninitialized: true,
-    //   store: new mongoStore({
-    //     url: config.db,
-    //     collection : 'sessions'
-    //   })
-    // }));
+    //åº”ç”¨å½“å‰çš„cookieä¸­é—´ä»¶
+    app.use(cookieParser("cdo"));
 
-    //ÉèÖÃµ±Ç°µÄµÇÂ½
-    app.use(passport.initialize());
-    app.use(passport.session());
-
-    // Á¬½Óflash´æ´¢Çø
+    //è®¾ç½®Session
+    app.use(session({
+        secret: 'cdo',
+        resave: true,
+        saveUninitialized: true
+    }));
     app.use(flash());
-
-    // should be declared after session and flash
     app.use(helpers(pkg.name));
 
-    //Ôö¼ÓCSRF¹¦ÄÜ
-    if (process.env.NODE_ENV !== 'test') {
-        app.use(csrf());
+    // è®¾ç½®å½“å‰åŒ…æ–‡ä»¶å’Œç¯å¢ƒä¿¡æ¯
+    app.use(function (req, res, next) {
 
-        app.use(function (req, res, next) {
-            res.locals.csrf_token = req.csrfToken();
-            next();
-        });
-    }
+        res.locals.pkg = pkg;
+        next();
+    });
 };

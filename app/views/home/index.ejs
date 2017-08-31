@@ -28,7 +28,7 @@ function post()
 {
     // var template={'返回':'这是一个mock数据'};
     // Mock.mock("http://127.0.0.1:3000/getdata",template);
-    var resource = Vue.resource("http://127.0.0.1:3000/getuser");
+    var resource = Vue.resource("http://127.0.0.1:3000/getdata");
 		vm = this;
 	  resource.get()
 		.then((response) => {

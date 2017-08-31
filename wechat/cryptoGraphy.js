@@ -1,4 +1,4 @@
-'use strict' //设置为严格模式
+﻿'use strict' //设置为严格模式
 
 const crypto = require('crypto'),//引入加密模块
   xmlParser = require('xml2js'),

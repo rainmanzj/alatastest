@@ -23,8 +23,8 @@ function local () {
 
 Seneca()
   .use(approver)
-  .use('math')
-  .listen({type: 'net', port: '8270', pin: 'cmd:*'})
+  .use(local)
+  .listen({type: 'tcp', port: '8270', pin: 'cmd:*'})
 
 
 // // function handler (err, reply) {

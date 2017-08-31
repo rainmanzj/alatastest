@@ -1,4 +1,4 @@
-'use strict' //设置为严格模式
+﻿'use strict' //设置为严格模式
 
 /**
  * 回复文本消息
@@ -24,7 +24,7 @@ exports.txtMsg = function(toUser,fromUser,content){
 exports.graphicMsg = function(toUser,fromUser,contentArr){
      var xmlContent =  "<xml><ToUserName><![CDATA["+ toUser +"]]></ToUserName>";
         xmlContent += "<FromUserName><![CDATA["+ fromUser +"]]></FromUserName>";
-        // xmlContent += "<CreateTime>"+ new Date().getTime() +"</CreateTime>";
+        xmlContent += "<CreateTime>"+ new Date().getTime() +"</CreateTime>";
         xmlContent += "<MsgType><![CDATA[news]]></MsgType>";
         xmlContent += "<ArticleCount>"+contentArr.length+"</ArticleCount>";
         xmlContent += "<Articles>";
@@ -39,4 +39,3 @@ exports.graphicMsg = function(toUser,fromUser,contentArr){
         xmlContent += "</Articles></xml>";
     return xmlContent;
 }
-

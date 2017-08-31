@@ -1,4 +1,4 @@
-'use strict' //设置为严格模式
+﻿'use strict' //设置为严格模式
 
 const crypto = require('crypto'), //引入加密模块
        https = require('https'), //引入 htts 模块
@@ -9,14 +9,14 @@ accessTokenJson = require('./access_token'), //引入本地存储的 access_toke
       menus  = require('./menus'), //引入微信菜单配置
  parseString = require('xml2js').parseString,//引入xml2js包
          msg = require('./msg'),//引入消息处理模块
-CryptoGraphy = require('./cryptoGraphy'); //微信消息加解密模块
+         CryptoGraphy = require('./cryptoGraphy'); //微信消息加解密模块
 
-
+const db = require("../app/db/");
 /**
  * 构建 WeChat 对象 即 js中 函数就是对象
  * @param {JSON} config 微信配置文件 
  */
-var WeChat = function(config){
+var WeChat = function (config) {
     //设置 WeChat 对象属性 config
     this.config = config;
     //设置 WeChat 对象属性 token
@@ -212,25 +212,64 @@ WeChat.prototype.handleMsg = function(req,res){
                     //判断事件类型
                     switch(result.Event.toLowerCase()){
                         case 'subscribe':
-                            //回复消息
-                            //var content = "欢迎关注 琵琶快建 公众号，琵琶快建是一个提供专业的楼板加建产品服务的网站：\n";
-                            //    content += "1.你是谁\n";
-                            //    content += "2.关于Node.js\n";
-                            //    content += "回复 “文章”  可以得到图文推送哦~\n";
-                            //reportMsg = msg.txtMsg(fromUser,toUser,content);
-							var contentArr = [
-                                {Title:"琵琶产品介绍",Description:"琵琶快建是一个提供专业的楼板加建产品服务的网站",PicUrl:"http://www.faruxue1688.com/img/showme.png",Url:"http://faruxue1688.com/index.html"},
+                            var contentArr = [
+                                {Title:"叮当快建是提供专业楼板加建服务的网站",
+                                Description:"在下方点击“我的”，申请免费量房，预约样板间和业务咨询",
+                                PicUrl:"http://www.faruxue1688.com/images/Abuild.jpg",
+                                Url:"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx459b286ba935a855&redirect_uri=http://www.faruxue1688.com/wx/marketingregister&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect"},
                             ];
                             //回复图文消息
-                            reportMsg = msg.graphicMsg(fromUser,toUser,contentArr);
-                        break;
+                            reportMsg = msg.graphicMsg(fromUser,toUser,contentArr);    
+                            console.log(result.FromUserName);
+                            console.log(result.EventKey);
+                            var rolekey = result.EventKey;
+                            var raks = rolekey.split("_");
+                            //当前账号的归属
+                            var sponsor = raks[1];
+                            var roleid = 0;
+                            //当前归属为9527时，说明是销售
+                            if (sponsor == 9527) {
+                                //销售角色
+                                roleid = 1;
+                            }
+                            console.log(db);
+                            console.log(db.User);
+                            db.User.findOne({
+                                where: {
+                                    openid: result.FromUserName
+                                }
+                            }).then(function (user) {
+                                if (user == null) {
+                                   db.User.create({
+                                        openid: result.FromUserName,
+                                        roleid: roleid,
+                                        sponsor: sponsor,
+                                        active: true
+                                    });
+                                }
+                            });
+                  
+
+							// var contentArr = [
+                            //     {Title:"叮当产品介绍",Description:"叮当快建是一个提供专业的楼板加建产品服务的网站",PicUrl:"http://www.faruxue1688.com/img/1.jpg",Url:"http://faruxue1688.com/index.html"},
+                            // ];
+                            // //回复图文消息
+                            // reportMsg = msg.graphicMsg(fromUser,toUser,contentArr);
+                            break;
+                        case "SCAN":
+                            
+                            //要实现统计分析，则需要扫描事件写入数据库，这里可以记录 EventKey及用户OpenID，扫描时间
+                            break;
                         case 'click':
                              var contentArr = [
-                                {Title:"琵琶产品介绍",Description:"琵琶快建是一个提供专业的楼板加建产品服务的网站",PicUrl:"http://www.faruxue1688.com/img/showme.png",Url:"http://faruxue1688.com/index.html"},
+                                {Title:"叮当快建是提供专业楼板加建服务的网站",
+                                 Description:"在下方点击“我的”，申请免费量房，预约样板间和业务咨询",
+                                 PicUrl:"http://www.faruxue1688.com/images/Abuild.jpg",
+                                 Url:"https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx459b286ba935a855&redirect_uri=http://www.faruxue1688.com/wx/marketingregister&response_type=code&scope=snsapi_userinfo&state=1&connect_redirect=1#wechat_redirect"},
                             ];
                             //回复图文消息
                             reportMsg = msg.graphicMsg(fromUser,toUser,contentArr);
-                        break;
+                            break;
                     }
                 }else{
                      //判断消息类型为 文本消息
@@ -238,20 +277,30 @@ WeChat.prototype.handleMsg = function(req,res){
                         //根据消息内容返回消息信息
                         switch(result.Content){
                             case '1':
-                                reportMsg = msg.txtMsg(fromUser,toUser,'Hello ！我是琵琶');
+                                reportMsg = msg.txtMsg(fromUser,toUser,'Hello ！我是叮当');
                             break;
                             case '2':
-                                reportMsg = msg.txtMsg(fromUser,toUser,'琵琶快建是一个提供专业的楼板加建产品服务的网站');
+                                reportMsg = msg.txtMsg(fromUser,toUser,'叮当快建是一个提供专业的楼板加建产品服务的网站');
                             break;
                             case '文章':
-                                var contentArr = [
-									{Title:"琵琶产品介绍",Description:"琵琶快建是一个提供专业的楼板加建产品服务的网站",PicUrl:"http://www.faruxue1688.com/img/showme.png",Url:"http://faruxue1688.com/user"},
-                                ];
-                                //回复图文消息
-                                reportMsg = msg.graphicMsg(fromUser,toUser,contentArr);
+                                // var contentArr = [
+								// 	{Title:"叮当产品介绍",Description:"叮当快建是一个提供专业的楼板加建产品服务的网站",PicUrl:"http://www.faruxue1688.com/img/a1.jpg",Url:"http://faruxue1688.com"},
+                                // ];
+                                // //回复图文消息
+                                // reportMsg = msg.graphicMsg(fromUser,toUser,contentArr);
+                                var content = "欢迎关注 叮当快建 公众号，叮当快建是一个提供专业的楼板加建产品服务的网站：\n";
+                                content += "1.你是谁\n";
+                                content += "2.关于Node.js\n";
+                                content += "回复 “文章”  可以得到图文推送哦~\n";
+                                content +=result.FromUserName+'\n';
+                                content +=result.toUser+'\n';
+                                content+=result.EventKey;
+
+                             reportMsg = msg.txtMsg(fromUser,toUser,content);
+
                             break;
                             default:
-                                reportMsg = msg.txtMsg(fromUser,toUser,'没有这个选项哦');
+                                reportMsg = msg.txtMsg(fromUser,toUser,"在下方点击“我的”，申请免费量房，预约样板间和业务咨询");
                             break;
                         }
                     }
