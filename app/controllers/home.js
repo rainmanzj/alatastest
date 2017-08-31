@@ -37,8 +37,8 @@ exports.loadagg = function (req, res) {
   });
 
   client.search({
-    index: 'index',
-    type: 'type',
+    index: 'scrapy',
+    type: 'items',
     body: {
       // query: {
       //   match: {
@@ -48,7 +48,7 @@ exports.loadagg = function (req, res) {
       aggs: {
         "group": {
           terms: {
-            field: "name"
+            field: "url"
           }
         }
       }
