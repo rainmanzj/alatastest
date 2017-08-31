@@ -2,7 +2,7 @@
 
 const path = require('path');
 const express = require('express');
-const port = process.env.PORT || 2999;
+const port = process.env.PORT || 3002;
 const app = express();
 const connection = null;
 
