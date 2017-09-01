@@ -2,15 +2,15 @@
 <script>
 function machine()
 {
-    var resource ="http://127.0.0.1:3002/td/machine?info=hello";// "http://www.faruxue1688.com/td/machine";
-    alert(resource);
+    var info=document.getElementById("sendmsg").value;
+    var resource ="http://127.0.0.1:3002/td/machine?info="+info;// "http://www.faruxue1688.com/td/machine";
     $.ajax({
         url: resource,
         type: "get",
         async: true,
         scrossDomain: true,
         success: function(msg) {
-            alert(msg);
+            document.getElementById("content").value=msg;
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
             alert("error:"+XMLHttpRequest.status);
@@ -21,5 +21,6 @@ function machine()
     });
 }
 </script>
-
+<input id="sendmsg" name="" type="text" style="width:400px; height:400px;" />
+<input id="content" name="" type="text" style="width:400px; height:400px;" /><br>
 <input type="button"  onclick="machine()">发送</input>
