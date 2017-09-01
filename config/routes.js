@@ -12,7 +12,7 @@ var wechatApp = new wechat(config);
 
 const home = require('../app/controllers/home');
 const test = require('../app/controllers/test');
-
+const machine=require('../app/controllers/machine');
 var webchatTest = new test(db);
 const login = require('../app/controllers/login');
 const weixinserver = require('../wechat/weixin');
@@ -31,6 +31,7 @@ module.exports = function (app) {
     //db.init();
     app.get('/td/test',home.testgetserver);
     app.get('/td/loadagg',home.loadagg);
+    app.get('/td/machine',machine.index);
     console.log("route");
     // app.get('/testgetserver', function (req, res) {
     //     home.testgetserver(req, res);

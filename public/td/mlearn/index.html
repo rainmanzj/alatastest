@@ -1,0 +1,25 @@
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.0.js"></script> 
+<script>
+function machine()
+{
+    var resource ="http://127.0.0.1:3002/td/machine?info=hello";// "http://www.faruxue1688.com/td/machine";
+    alert(resource);
+    $.ajax({
+        url: resource,
+        type: "get",
+        async: true,
+        scrossDomain: true,
+        success: function(msg) {
+            alert(msg);
+        },
+        error: function(XMLHttpRequest, textStatus, errorThrown) {
+            alert("error:"+XMLHttpRequest.status);
+        },
+        complete: function(XMLHttpRequest, textStatus) {
+
+        }
+    });
+}
+</script>
+
+<input type="button"  onclick="machine()">发送</input>
