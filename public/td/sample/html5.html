@@ -1,0 +1,33 @@
+<html>  
+        <head>  
+          
+        <script type='text/javascript'>  
+        if (document.createElement("input").webkitSpeech === undefined) {    
+            alert("1");  
+            }  
+        else{  
+            alert("2");  
+            }  
+      
+        //事件的触发（可使用下面的js调用完成）  
+        
+        input.onwebkitspeechchange = function() {  
+                alert("aaa");  
+    
+        };  
+        </script>  
+        <script>//这里的作用是文本框（搜索框）失去焦点的时候，值重新赋了下。这样语音再次输入就不会将以前的值去掉  
+            document.querySelector("input[name='s']").addEventListener("blur",function(){this.value=this.value;});  
+        </script>  
+        </head>  
+        <body>  
+        <!--  
+            <input name="s" type="text" x-webkit-speech x-webkit-grammar="builtin:translate" />  
+            <input x-webkit-speech lang="zh-CN" />  
+            <input x-webkit-speech x-webkit-grammar="bUIltin:search" />  
+        -->  
+        <form action="http://www.google.com/search" >  
+            <input type="search" name="q" lang="zh-CN" x-webkit-speech x-webkit grammar="builtin:search" onwebkitspeechchange="startSearch(event)"/>  
+        </form>  
+        </body>  
+    </html> 
