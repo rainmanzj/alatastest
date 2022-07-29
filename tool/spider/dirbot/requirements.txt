@@ -13,7 +13,7 @@ pycparser==2.14
 pyes==0.99.6
 pyOpenSSL==16.0.0
 queuelib==1.4.2
-Scrapy==1.0.5
+Scrapy==2.6.2
 ScrapyElasticSearch==0.8.9
 service-identity==16.0.0
 six==1.10.0
